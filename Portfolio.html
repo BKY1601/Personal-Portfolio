@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bipin Yadav - Cloud & AI Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        :root {
+            --bg-dark: #020617;
+            --text-dark: #e2e8f0;
+            --text-secondary-dark: #94a3b8;
+            --card-dark: #0f172a;
+            --border-dark: #1e293b;
+            --header-dark: rgba(2, 6, 23, 0.7);
+            --tag-bg-dark: #1e3a8a;
+            --tag-text-dark: #dbeafe;
+            --primary-color: #3b82f6;
+            --secondary-color: #8b5cf6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        
+        p, .timeline ul li { color: var(--text-secondary-dark); }
+
+        .section { scroll-margin-top: 80px; }
+        .glass-header {
+            background-color: var(--header-dark);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .nav-link { 
+            position: relative; 
+            color: var(--text-dark);
+        }
+        .nav-link:hover { color: var(--primary-color); }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 50%; background-color: var(--primary-color); transition: all 0.3s ease-out; transform: translateX(-50%); }
+        .nav-link:hover::after { width: 100%; }
+
+        .card {
+            background-color: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background: radial-gradient(circle at center, rgba(139, 92, 246, 0.1), transparent 80%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: var(--primary-color);
+        }
+        .card:hover::before { opacity: 1; }
+
+        .tech-tag { background-color: var(--tag-bg-dark); color: var(--tag-text-dark); font-size: 0.75rem; padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: 500; }
+        .gradient-text { background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .animated-item { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+        .animated-item.is-visible { opacity: 1; transform: translateY(0); }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background-color: var(--primary-color);
+            animation: blink 1s infinite;
+            vertical-align: bottom;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        #particle-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .particle { position: absolute; background-color: var(--primary-color); border-radius: 50%; animation: float 25s infinite linear; }
+        @keyframes float {
+            0% { transform: translateX(0) translateY(0); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateX(calc(100vw * var(--tx))) translateY(calc(100vh * var(--ty))); opacity: 0; }
+        }
+
+        .timeline { position: relative; max-width: 1200px; margin: 0 auto; }
+        .timeline::after { content: ''; position: absolute; width: 6px; background-color: var(--border-dark); top: 0; bottom: 0; left: 50%; margin-left: -3px; }
+        .timeline-container { padding: 10px 40px; position: relative; background-color: inherit; width: 50%; }
+        .timeline-container.left { left: 0; }
+        .timeline-container.right { left: 50%; }
+        .timeline-container::after { content: ''; position: absolute; width: 25px; height: 25px; right: -17px; background-color: var(--card-dark); border: 4px solid var(--primary-color); top: 15px; border-radius: 50%; z-index: 1; }
+        .timeline-container.right::after { left: -16px; }
+        .timeline-content { padding: 20px 30px; background-color: var(--card-dark); position: relative; border-radius: 6px; border: 1px solid var(--border-dark); }
+        @media screen and (max-width: 768px) {
+            .timeline::after { left: 31px; }
+            .timeline-container { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .timeline-container.right { left: 0%; }
+            .timeline-container.left::after, .timeline-container.right::after { left: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="particle-container"></div>
+    <!-- Header & Navigation -->
+    <header class="glass-header sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-100">Bipin<span class="text-blue-500">.</span>dev</a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#experience" class="nav-link">Experience</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center">
+                <i class="fas fa-bars text-2xl text-gray-100"></i>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+             <a href="#about" class="block py-2 px-4 text-sm hover:bg-gray-800">About</a>
+            <a href="#skills" class="block py-2 px-4 text-sm hover:bg-gray-800">Skills</a>
+            <a href="#experience" class="block py-2 px-4 text-sm hover:bg-gray-800">Experience</a>
+            <a href="#projects" class="block py-2 px-4 text-sm hover:bg-gray-800">Projects</a>
+            <a href="#contact" class="block py-2 px-4 text-sm hover:bg-gray-800">Contact</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 relative z-10">
+
+        <!-- About Section -->
+        <section id="about" class="section flex flex-col md:flex-row items-center justify-center min-h-screen">
+             <div class="md:w-1/2 flex justify-center mb-10 md:mb-0 md:order-2">
+                <div class="relative">
+                    <img src="./img/pi.png" alt="Bipin Yadav" class="rounded-full shadow-2xl w-64 h-64 md:w-80 md:h-80 object-cover z-10 relative border-4 border-blue-500/50">
+                     <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur-2xl opacity-30 animate-pulse"></div>
+                </div>
+            </div>
+            <div class="md:w-1/2 text-center md:text-left md:order-1 animated-item">
+                <h1 class="text-4xl md:text-5xl font-extrabold mb-4">
+                    <span id="typing-text" class="gradient-text h-16 block"></span><span class="typing-cursor"></span>
+                </h1>
+                <p class="text-xl mb-8">I’m Bipin Yadav, a Cloud Engineer with over 2 years of experience building secure and scalable infrastructure. Having completed my Master’s in Computer Applications, I’m now focused on exploring the intersection of Cloud and AI to develop intelligent, real-world solutions. Previously at LTIMindtree, I worked on AWS and Azure environments, optimizing performance and reliability. I’m passionate about using Python and AI to create technology that’s both smart and meaningful.</p>
+                <div class="flex justify-center md:justify-start space-x-4">
+                    <a href="./Resume/Bipin Yadav Resume.pdf" download="Bipin_Yadav_Resume.pdf" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-700 transition-transform hover:scale-105 shadow-lg"><i class="fas fa-download mr-2"></i>Download Resume</a>
+                    <a href="#contact" class="bg-gray-700 text-gray-200 font-bold py-3 px-6 rounded-full hover:bg-gray-600 transition-transform hover:scale-105 shadow-lg">Contact Me</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section pt-20">
+            <h2 class="text-4xl font-bold text-center mb-12 animated-item text-gray-100">Technical Universe</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card p-6 rounded-lg animated-item" style="transition-delay: 100ms;">
+                    <h3 class="text-2xl font-semibold mb-4 flex items-center text-gray-100"><i class="fas fa-cloud mr-3 text-blue-500"></i>Cloud & DevOps</h3>
+                    <div class="flex flex-wrap gap-2"><span class="tech-tag">AWS</span><span class="tech-tag">Microsoft Azure</span><span class="tech-tag">GCP</span><span class="tech-tag">Service Now</span><span class="tech-tag">SCCM</span><span class="tech-tag">Linux</span><span class="tech-tag">DevOps</span></div>
+                </div>
+                <div class="card p-6 rounded-lg animated-item" style="transition-delay: 200ms;">
+                    <h3 class="text-2xl font-semibold mb-4 flex items-center text-gray-100"><i class="fas fa-brain mr-3 text-purple-500"></i>AI & Machine Learning</h3>
+                    <div class="flex flex-wrap gap-2"><span class="tech-tag">Python</span><span class="tech-tag">Streamlit</span><span class="tech-tag">Scikit-learn</span><span class="tech-tag">NLP</span><span class="tech-tag">Azure ML Studio</span><span class="tech-tag">Jupyter</span></div>
+                </div>
+                <div class="card p-6 rounded-lg animated-item" style="transition-delay: 300ms;">
+                    <h3 class="text-2xl font-semibold mb-4 flex items-center text-gray-100"><i class="fas fa-code mr-3 text-green-500"></i>Programming & Tools</h3>
+                    <div class="flex flex-wrap gap-2"><span class="tech-tag">JavaScript</span><span class="tech-tag">HTML5/CSS3</span><span class="tech-tag">PHP</span><span class="tech-tag">MySQL</span><span class="tech-tag">Figma</span><span class="tech-tag">Postman</span><span class="tech-tag">Git & GitHub</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="section pt-20">
+            <h2 class="text-4xl font-bold text-center mb-12 animated-item text-gray-100">Professional Journey</h2>
+            <div class="timeline">
+                <div class="timeline-container left animated-item">
+                    <div class="timeline-content card">
+                        <h3 class="text-2xl font-semibold text-gray-100">Cloud Engineer</h3>
+                        <h4 class="text-md font-bold text-blue-500 mb-2">LTIMindtree (Dec 2021 - Aug 2023)</h4>
+                        <ul class="list-disc list-inside space-y-2">
+                           <li>Developed and executed secure AWS/Azure operations, including VM provisioning, server setup, storage configuration, and patching via AWS SSM and SCCM.</li>
+                           <li>Oversaw server health by monitoring backups and performance, minimizing downtime and improving system reliability.</li>
+                           <li>Configured and optimized SAP HANA VMs based on client needs, leading to a 20% reduction in costs.</li>
+                           <li>Resolved critical server performance issues using ServiceNow and OTRS, earning client appreciation.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-container right animated-item">
+                    <div class="timeline-content card">
+                        <h3 class="text-2xl font-semibold text-gray-100">AI: Transformative Learning Intern</h3>
+                        <h4 class="text-md font-bold text-purple-500 mb-2">TechSaksham (Microsoft & SAP Initiative)</h4>
+                         <ul class="list-disc list-inside space-y-2">
+                           <li>Completed an intensive AI program, developing a real-world project from concept to deployment.</li>
+                           <li>Built an AI Resume Ranker using Python, Scikit-learn, and NLP techniques (TF-IDF, cosine similarity) to match candidates with job descriptions.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Projects Section -->
+        <section id="projects" class="section pt-20">
+             <h2 class="text-4xl font-bold text-center mb-12 animated-item text-gray-100">Featured AI & Cloud Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card p-6 rounded-lg flex flex-col animated-item" style="transition-delay: 100ms;">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-100">AI Resume Ranker</h3>
+                    <p class="mb-4 flex-grow">AI Resume Ranker is a Python project that compares and ranks resumes based on a given job description using TF-IDF and cosine similarity. It helps recruiters find the most relevant resumes automatically using Natural Language Processing (NLP).</p>
+                    <div class="flex flex-wrap gap-2 mb-4"><span class="tech-tag">Python</span><span class="tech-tag">NLP</span><span class="tech-tag">Streamlit</span></div>
+                    <a href="https://github.com/BKY1601/resume-ranking" class="text-blue-500 hover:underline mt-auto font-semibold">View on GitHub <i class="fab fa-github ml-1"></i></a>
+                </div>
+                 <div class="card p-6 rounded-lg flex flex-col animated-item" style="transition-delay: 200ms;">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-100">Spamly (SMS Spam Classifier)</h3>
+                    <p class="mb-4 flex-grow">The Spamly Streamlit app uses a machine learning model to classify SMS messages as Spam or Ham (Not Spam). It’s built using Python, scikit-learn, and Streamlit. Users can enter a message, and the app will instantly predict whether it's a spam message or not using a Naive Bayes classifier trained on TF-IDF features.</p>
+                     <div class="flex flex-wrap gap-2 mb-4"><span class="tech-tag">Python</span><span class="tech-tag">NLP</span><span class="tech-tag">Streamlit</span></div>
+                    <a href="https://github.com/BKY1601/spamly" class="text-blue-500 hover:underline mt-auto font-semibold">View on GitHub <i class="fab fa-github ml-1"></i></a>
+                </div>
+                <div class="card p-6 rounded-lg flex flex-col animated-item" style="transition-delay: 300ms;">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-100">Indian Politics Analytics</h3>
+                    <p class="mb-4 flex-grow">A data analytics project to visualize and forecast Indian election results using Python.</p>
+                    <div class="flex flex-wrap gap-2 mb-4"><span class="tech-tag">Data Analytics</span><span class="tech-tag">Python</span></div>
+                     <a href="https://github.com/BKY1601/Indian-Political-Analytics" class="text-blue-500 hover:underline mt-auto font-semibold">View on GitHub <i class="fab fa-github ml-1"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education & Certs Section -->
+        <section id="education" class="section pt-20">
+            <h2 class="text-4xl font-bold text-center mb-12 animated-item text-gray-100">Education & Certifications</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+                <div class="animated-item">
+                    <div class="card p-8 rounded-lg text-center h-full">
+                        <i class="fas fa-graduation-cap text-4xl text-blue-500 mb-4"></i>
+                        <h3 class="text-2xl font-bold text-gray-100">Master of Computer Application (M.C.A)</h3>
+                        <p class="font-medium">Thakur Institute of Management Studies Carrier Development & Research</p>
+                        <p class="text-sm">2023 - 2025</p>
+                    </div>
+                </div>
+                <div class="animated-item">
+                     <div class="card p-8 rounded-lg text-center h-full">
+                        <i class="fas fa-university text-4xl text-blue-500 mb-4"></i>
+                        <h3 class="text-2xl font-bold text-gray-100">Bachelor of Science (B.Sc.C.S.)</h3>
+                        <p class="font-medium">Thakur Ramnarayan College of Arts & Commerce</p>
+                        <p class="text-sm">2018 - 2021</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                 <a href="https://catalog-education.oracle.com/ords/certview/sharebadge?id=8C8277DEFDCBEB53A3FD64938E00794C93AB24FDFA2D58FA8BF14D4023B59C0C" target="_blank" class="card p-4 rounded-lg flex flex-col items-center justify-center text-center animated-item">
+                    <i class="fas fa-award text-3xl text-yellow-500 mb-2"></i>
+                    <h4 class="font-semibold text-sm text-gray-100">Oracle AI Vector Search</h4>
+                </a>
+                 <a href="https://www.credly.com/badges/0687c6aa-82b5-40d6-b3fc-13011d475ffe?source=linked_in_profile" target="_blank" class="card p-4 rounded-lg flex flex-col items-center justify-center text-center animated-item">
+                    <i class="fab fa-microsoft text-3xl text-blue-500 mb-2"></i>
+                    <h4 class="font-semibold text-sm text-gray-100">Azure Fundamentals</h4>
+                </a>
+                 <a href="https://archive.nptel.ac.in/noc/Ecertificate/?q=NPTEL24CS17S36230039730438196" target="_blank" class="card p-4 rounded-lg flex flex-col items-center justify-center text-center animated-item">
+                    <i class="fas fa-cloud text-3xl text-gray-500 mb-2"></i>
+                    <h4 class="font-semibold text-sm text-gray-100">NPTEL Cloud Computing</h4>
+                </a>
+                <a href="https://codeinplace.stanford.edu/cip5/certificate/s87bu4" target="_blank" class="card p-4 rounded-lg flex flex-col items-center justify-center text-center animated-item">
+                    <i class="fab fa-python text-3xl text-green-500 mb-2"></i>
+                    <h4 class="font-semibold text-sm text-gray-100">Stanford Code In Place</h4>
+                </a>
+                 <a href="https://coursera.org/verify/professional-cert/KKQKCA46AA2Y" target="_blank" class="card p-4 rounded-lg flex flex-col items-center justify-center text-center animated-item">
+                    <i class="fab fa-google text-3xl text-red-500 mb-2"></i>
+                    <h4 class="font-semibold text-sm text-gray-100">Google IT Support</h4>
+                </a>
+                <a href="https://media.geeksforgeeks.org/courses/certificates/74f5d023b8d6208d9284d80a90d85532.pdf" target="_blank" class="card p-4 rounded-lg flex flex-col items-center justify-center text-center animated-item">
+                    <i class="fas fa-code text-3xl text-purple-500 mb-2"></i>
+                    <h4 class="font-semibold text-sm text-gray-100">GeeksForGeeks Python</h4>
+                </a>
+                <a href="https://www.mygreatlearning.com/certificate/JWVLVKPL" target="_blank" class="card p-4 rounded-lg flex flex-col items-center justify-center text-center animated-item">
+                    <i class="fas fa-cogs text-3xl text-orange-500 mb-2"></i>
+                    <h4 class="font-semibold text-sm text-gray-100">Great Learning DevOps</h4>
+                </a>
+                 <a href="https://www.credly.com/badges/1283b2e0-dfbb-46a3-a978-3c9a78e6b967/public_url" target="_blank" class="card p-4 rounded-lg flex flex-col items-center justify-center text-center animated-item">
+                    <i class="fas fa-database text-3xl text-indigo-500 mb-2"></i>
+                    <h4 class="font-semibold text-sm text-gray-100">Artificial intelligent Fundamentals</h4>
+                </a>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="section pt-20 text-center">
+            <div class="animated-item">
+                <h2 class="text-4xl font-bold text-center mb-4 text-gray-100">Let's Build the Future</h2>
+                <p class="text-lg mb-8 max-w-2xl mx-auto">I'm excited to bring my cloud expertise to an innovative AI-focused role. If you're looking for someone who can build, deploy, and manage intelligent systems at scale, let's connect.</p>
+                <a href="mailto:bipinyadav919@gmail.com" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-700 transition-transform hover:scale-105 shadow-lg text-lg inline-block">Say Hello</a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-20 border-t border-gray-800">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-400">
+             <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://linkedin.com/in/bipin-yadav-jan16" target="_blank" class="hover:text-blue-500 transition-colors duration-300"><i class="fab fa-linkedin fa-2x"></i></a>
+                <a href="https://github.com/BKY1601" target="_blank" class="hover:text-blue-500 transition-colors duration-300"><i class="fab fa-github fa-2x"></i></a>
+            </div>
+            <p>&copy; 2025 Bipin Yadav. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <button id="to-top-button" title="Go To Top" class="hidden fixed z-50 bottom-10 right-10 p-4 w-14 h-14 rounded-full shadow-md bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold transition-transform hover:scale-110"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- MOBILE MENU SCRIPT ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+            });
+
+            // --- SCROLL TO TOP SCRIPT ---
+            const toTopButton = document.getElementById('to-top-button');
+            window.addEventListener('scroll', () => {
+                toTopButton.classList.toggle('hidden', document.body.scrollTop < 200 && document.documentElement.scrollTop < 200);
+            });
+            toTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            
+            // --- SCROLL ANIMATION SCRIPT ---
+            const animatedItems = document.querySelectorAll('.animated-item');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            animatedItems.forEach(item => observer.observe(item));
+
+            // --- TYPING EFFECT SCRIPT ---
+            const typingTextElement = document.getElementById('typing-text');
+            const words = ["Bipin Yadav", "Cloud Engineer", "Aspiring AI Engineer"];
+            let wordIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function type() {
+                const currentWord = words[wordIndex];
+                let displayText = isDeleting 
+                    ? currentWord.substring(0, charIndex--)
+                    : currentWord.substring(0, charIndex++);
+                
+                typingTextElement.innerHTML = displayText;
+
+                if (!isDeleting && charIndex === currentWord.length) {
+                    setTimeout(() => isDeleting = true, 2000);
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    wordIndex = (wordIndex + 1) % words.length;
+                }
+                
+                const typeSpeed = isDeleting ? 100 : 150;
+                setTimeout(type, typeSpeed);
+            }
+            type();
+
+            // --- PARTICLE BACKGROUND SCRIPT ---
+            const particleContainer = document.getElementById('particle-container');
+            const particleCount = 20;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 5 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.setProperty('--tx', (Math.random() - 0.5) * 2);
+                particle.style.setProperty('--ty', (Math.random() - 0.5) * 2);
+                particle.style.animationDuration = `${Math.random() * 20 + 15}s`;
+                particle.style.animationDelay = `${Math.random() * -25}s`;
+                particleContainer.appendChild(particle);
+            }
+        });
+    </script>
+</body>
+</html>
+
